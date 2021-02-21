@@ -19,3 +19,13 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser. T
 ## Development
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). [CRA documentation](./CRA.md)
+
+### Deploying
+
+To deploy the app to [bestprogrammingclub.github.io/rabbithole](https://bestprogrammingclub.github.io/rabbithole/):
+
+```sh
+yarn deploy
+# or
+#   npm run deploy
+```
