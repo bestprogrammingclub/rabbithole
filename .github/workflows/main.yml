@@ -1,7 +1,7 @@
 name: Build and Deploy
 on:
   push:
-    branches:    
+    branches:
       # Push events on main branch
       - main
 jobs:
@@ -14,5 +14,7 @@ jobs:
         run: |
           yarn
       - name: Deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           yarn deploy
