@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/rabbithole/static/css/main.6dea0f05.chunk.css",
+    "main.js": "/rabbithole/static/js/main.a86dd019.chunk.js",
+    "main.js.map": "/rabbithole/static/js/main.a86dd019.chunk.js.map",
+    "runtime-main.js": "/rabbithole/static/js/runtime-main.3ce66e0e.js",
+    "runtime-main.js.map": "/rabbithole/static/js/runtime-main.3ce66e0e.js.map",
+    "static/js/2.d8970a1c.chunk.js": "/rabbithole/static/js/2.d8970a1c.chunk.js",
+    "static/js/2.d8970a1c.chunk.js.map": "/rabbithole/static/js/2.d8970a1c.chunk.js.map",
+    "static/js/3.a293e913.chunk.js": "/rabbithole/static/js/3.a293e913.chunk.js",
+    "static/js/3.a293e913.chunk.js.map": "/rabbithole/static/js/3.a293e913.chunk.js.map",
+    "index.html": "/rabbithole/index.html",
+    "static/css/main.6dea0f05.chunk.css.map": "/rabbithole/static/css/main.6dea0f05.chunk.css.map",
+    "static/js/2.d8970a1c.chunk.js.LICENSE.txt": "/rabbithole/static/js/2.d8970a1c.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3ce66e0e.js",
+    "static/js/2.d8970a1c.chunk.js",
+    "static/css/main.6dea0f05.chunk.css",
+    "static/js/main.a86dd019.chunk.js"
+  ]
+}
