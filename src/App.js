@@ -73,18 +73,25 @@ class RabbitHole extends React.Component {
     super(props);
     this.state = {
       iframeURL: "https://en.wikipedia.org/wiki/Special:Random",      
+      hasFirstLoaded: false,
     }
   }
 
-  somethingClicked = ()=> {
-    alert('Test')
+  handleOnLoad = ()=> {
+    if (this.state.hasFirstLoaded === false) {
+      this.setState({
+        hasFirstLoaded: true,
+      })
+      return null; 
+    }
+    alert('hello!!!!!!!!!!!!!!!!!')
   }
 
   render() {
     return <div>
       <p>This is the hole!</p>
       <iframe src={this.state.iframeURL}
-          onLoad={this.somethingClicked}
+          onLoad={this.handleOnLoad}
           title="Wikipedia Page"
           width="750px"
           height="1200px"
