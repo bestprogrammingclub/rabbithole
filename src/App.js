@@ -25,6 +25,8 @@ export default function App() {
 
         <hr />
 
+        <a href="http://en.wikipedia.org/wiki/Special:Random">Random Wiki Article</a>
+
         {/*
           A <Switch> looks through all its children <Route>
           elements and renders the first one whose path
