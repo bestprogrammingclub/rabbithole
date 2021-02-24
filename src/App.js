@@ -14,18 +14,24 @@ export default function App() {
   return (
     <Router>
       <div>
-        <ul>
+        {/* <ul>
           <li>
             <Link to="/">Home</Link>
           </li>
           <li>
             <Link to="/about">About</Link>
           </li>
-        </ul>
+        </ul> */}
 
         <hr />
 
         <a href="http://en.wikipedia.org/wiki/Special:Random">Random Wiki Article</a>
+
+        <iframe src="https://en.wikipedia.org/wiki/Special:Random"
+                width="750px"
+                height="1200px"
+                id="wikiArticle"
+                className="wikiArticle"/>                
 
         {/*
           A <Switch> looks through all its children <Route>
@@ -34,14 +40,16 @@ export default function App() {
           you have multiple routes, but you want only one
           of them to render at a time
         */}
-        <Switch>
+        {/* <Switch>
           <Route exact path="/">
-            <Home />
+            <Home /> 
+            <RabbitHole /> 
           </Route>
           <Route path="/about">
             <About />
           </Route>
-        </Switch>
+        </Switch> */}
+        <RabbitHole />
       </div>
     </Router>
   );
@@ -64,4 +72,10 @@ function About() {
       <h2>About</h2>
     </div>
   );
+}
+
+class RabbitHole extends React.Component {
+  render() {
+    return <p>This is the hole!</p>
+  }
 }
