@@ -27,12 +27,6 @@ export default function App() {
 
         <a href="http://en.wikipedia.org/wiki/Special:Random">Random Wiki Article</a>
 
-        <iframe src="https://en.wikipedia.org/wiki/Special:Random"
-                width="750px"
-                height="1200px"
-                id="wikiArticle"
-                className="wikiArticle"/>                
-
         {/*
           A <Switch> looks through all its children <Route>
           elements and renders the first one whose path
@@ -75,7 +69,27 @@ function About() {
 }
 
 class RabbitHole extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      iframeURL: "https://en.wikipedia.org/wiki/Special:Random",      
+    }
+  }
+
+  somethingClicked = ()=> {
+    alert('Test')
+  }
+
   render() {
-    return <p>This is the hole!</p>
+    return <div>
+      <p>This is the hole!</p>
+      <iframe src={this.state.iframeURL}
+          onLoad={this.somethingClicked}
+          title="Wikipedia Page"
+          width="750px"
+          height="1200px"
+          id="wikiArticle"
+          className="wikiArticle"/>               
+    </div>
   }
 }
