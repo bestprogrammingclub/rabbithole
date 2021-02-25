@@ -84,20 +84,47 @@ const RabbitHolePage = withRouter(
     }
 
     componentDidMount() {
-      fetch(
-        `https://en.wikipedia.org/api/rest_v1/page/random/mobile-sections`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      )
-        .then((resp) => resp.json())
-        .then((resp) => {
-          console.log('resp', resp);
+      console.log(this.props.location.search);
+      if (this.props.location.search) {
+        const searchParams = new URLSearchParams(this.props.location.search);
+        const wikiValue = searchParams.get('wiki');
 
-          this.setState({ wikiData: resp });
-        });
+        if (wikiValue) {
+          const wikiValueArray = wikiValue.split('|');
+          console.log('TODO:', wikiValueArray[wikiValueArray.length - 1]);
+          const mostRecentPage = wikiValueArray[wikiValueArray.length - 1];
+
+          fetch(
+            `https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${mostRecentPage}`,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          )
+            .then((resp) => resp.json())
+            .then((resp) => {
+              console.log('resp', resp);
+
+              this.setState({ wikiData: resp });
+            });
+        }
+      } else {
+        fetch(
+          `https://en.wikipedia.org/api/rest_v1/page/random/mobile-sections`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+          .then((resp) => resp.json())
+          .then((resp) => {
+            console.log('resp', resp);
+
+            this.setState({ wikiData: resp });
+          });
+      }
     }
 
     /**
@@ -112,7 +139,24 @@ const RabbitHolePage = withRouter(
         const wikiValue = searchParams.get('wiki');
 
         if (wikiValue) {
-          console.log('TODO:', wikiValue);
+          const wikiValueArray = wikiValue.split('|');
+          console.log('TODO:', wikiValueArray[wikiValueArray.length - 1]);
+          const mostRecentPage = wikiValueArray[wikiValueArray.length - 1];
+
+          fetch(
+            `https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${mostRecentPage}`,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          )
+            .then((resp) => resp.json())
+            .then((resp) => {
+              console.log('resp', resp);
+
+              this.setState({ wikiData: resp });
+            });
         }
       }
     }
