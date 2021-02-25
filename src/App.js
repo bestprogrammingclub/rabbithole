@@ -101,6 +101,23 @@ const RabbitHolePage = withRouter(
     }
 
     /**
+     * TODO Check for updates to the component so that we can detect
+     * when there are changes to the URL. In our case, we want
+     * to detect changes to the location search params and render
+     * the new Wikipedia component based on the last clicked link.
+     */
+    componentDidUpdate(prevProps) {
+      if (this.props.location.search !== prevProps.location.search) {
+        const searchParams = new URLSearchParams(this.props.location.search);
+        const wikiValue = searchParams.get('wiki');
+
+        if (wikiValue) {
+          console.log('TODO:', wikiValue);
+        }
+      }
+    }
+
+    /**
      * Replace links to `/wiki/` page in in API response with
      * a URl search string instead. This allows us to update the
      * URL value without navigating away from the page.
