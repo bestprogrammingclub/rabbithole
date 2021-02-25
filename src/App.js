@@ -72,31 +72,40 @@ class RabbitHole extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      iframeURL: "https://en.wikipedia.org/wiki/Special:Random",      
-      hasFirstLoaded: false,
+      wikiText: "",      
     }
   }
 
-  handleOnLoad = ()=> {
-    if (this.state.hasFirstLoaded === false) {
-      this.setState({
-        hasFirstLoaded: true,
-      })
-      return null; 
-    }
-    alert('hello!!!!!!!!!!!!!!!!!')
+  componentDidMount() {
+    console.log('get');
+    const params = [
+      'action=parse',
+      'format=json',
+      'origin=*',
+      'prop=text',
+      'formatversion=2',
+      'page=Pet_door',
+      // 'list=random',
+      // 'rnlimit=1',
+    ];
+    fetch(`https://en.wikipedia.org/w/api.php?${params.join('&')}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((resp) => resp.json())
+      .then((resp) => {
+        console.log('resp', resp);
+
+        this.setState({ wikiText: resp.parse.text });
+      });
   }
+
 
   render() {
     return <div>
       <p>This is the hole!</p>
-      <iframe src={this.state.iframeURL}
-          onLoad={this.handleOnLoad}
-          title="Wikipedia Page"
-          width="750px"
-          height="1200px"
-          id="wikiArticle"
-          className="wikiArticle"/>               
+      <div dangerouslySetInnerHTML={{ __html: this.state.wikiText }} />
     </div>
   }
 }
