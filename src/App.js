@@ -139,6 +139,8 @@ const RabbitHolePage = withRouter(
         //  1. /wiki/Pet_door  ->  /#/?wiki=Pet_door
         //  2. /wiki/Dog       ->  /#/?wiki=Pet_door|Dog
         //  3. /wiki/Mammal    ->  /#/?wiki=Pet_door|Dog|Mammal
+        // TODO Handle if URL is too long, show message like
+        // "you've been in the rabbit hole too long"
         `/#/?wiki=${wikiValue ? `${wikiValue}|` : ''}`
       );
     }
