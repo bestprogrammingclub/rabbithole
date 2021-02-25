@@ -25,7 +25,7 @@ export default function App() {
 
         <hr />
 
-        <a href="http://en.wikipedia.org/wiki/Special:Random">Random Wiki Article</a>
+        {/* <a href="http://en.wikipedia.org/wiki/Special:Random">Random Wiki Article</a> */}
 
         {/*
           A <Switch> looks through all its children <Route>
@@ -72,23 +72,12 @@ class RabbitHole extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      wikiText: "",      
+      wikiData: {},   
     }
   }
 
   componentDidMount() {
-    console.log('get');
-    const params = [
-      'action=parse',
-      'format=json',
-      'origin=*',
-      'prop=text',
-      'formatversion=2',
-      'page=Pet_door',
-      // 'list=random',
-      // 'rnlimit=1',
-    ];
-    fetch(`https://en.wikipedia.org/w/api.php?${params.join('&')}`, {
+    fetch(`https://en.wikipedia.org/api/rest_v1/page/random/mobile-sections`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -97,15 +86,30 @@ class RabbitHole extends React.Component {
       .then((resp) => {
         console.log('resp', resp);
 
-        this.setState({ wikiText: resp.parse.text });
+        this.setState({ wikiData: resp });
       });
   }
 
 
   render() {
     return <div>
-      <p>This is the hole!</p>
-      <div dangerouslySetInnerHTML={{ __html: this.state.wikiText }} />
-    </div>
+      {this.state.wikiData.lead &&
+      this.state.wikiData.lead.sections &&
+      this.state.wikiData.lead.sections.map((section) => (
+        <div
+          key={section.id}
+          dangerouslySetInnerHTML={{ __html: section.text }}
+        />
+      ))}
+      
+      {this.state.wikiData.remaining &&
+      this.state.wikiData.remaining.sections &&
+      this.state.wikiData.remaining.sections.map((section) => (
+        <div key={section.id}>
+          <h2>{section.line}</h2>
+          <div dangerouslySetInnerHTML={{ __html: section.text }}/>
+        </div>
+      ))}
+  </div>
   }
 }
