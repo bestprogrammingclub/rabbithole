@@ -113,7 +113,7 @@ const RabbitHolePage = withRouter(
         const wikiValueArray = wikiValue.split('|');
         const mostRecentPage = wikiValueArray[wikiValueArray.length - 1];
 
-        // COULD REFACTOR 
+        // TODO : COULD REFACTOR 
 
         fetch(
           `https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${mostRecentPage}`,
