@@ -80,6 +80,7 @@ const RabbitHolePage = withRouter(
       super(props);
       this.state = {
         wikiData: {},
+        firstPageTitle: "",
       };
     }
 
@@ -89,19 +90,34 @@ const RabbitHolePage = withRouter(
         this.getMostRecentPage();
       } else {
         fetch(
-          `https://en.wikipedia.org/api/rest_v1/page/random/mobile-sections`,
+          `https://en.wikipedia.org/api/rest_v1/page/random/title`,
           {
             headers: {
               'Content-Type': 'application/json',
             },
-          }
+          }          
         )
-          .then((resp) => resp.json())
-          .then((resp) => {
-            console.log('resp', resp);
+        .then((resp) => resp.json())
+        .then((randomTitleData) => {
+          console.log('TITLE FETCH resp', randomTitleData.items[0].title);
+          this.setState({ firstPageTitle: randomTitleData.items[0].title});
 
-            this.setState({ wikiData: resp });
-          });
+          fetch(
+            `https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${randomTitleData.items[0].title}`,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          )
+            .then((resp) => resp.json())
+            .then((data) => {
+              console.log('resp', data);
+  
+              this.setState({ wikiData: data });
+            });
+            
+        });
       }
     }
 
@@ -142,6 +158,8 @@ const RabbitHolePage = withRouter(
       }
     }
 
+
+
     /**
      * Replace links to `/wiki/` page in in API response with
      * a URl search string instead. This allows us to update the
@@ -166,7 +184,7 @@ const RabbitHolePage = withRouter(
         //  3. /wiki/Mammal    ->  /#/?wiki=Pet_door|Dog|Mammal
         // TODO Handle if URL is too long, show message like
         // "you've been in the rabbit hole too long"
-        `/#/?wiki=${wikiValue ? `${wikiValue}|` : ''}`
+        `/#/?wiki=${wikiValue ? `${wikiValue}` : `${this.state.firstPageTitle}`}|`
       );
     }
 
@@ -188,7 +206,12 @@ const RabbitHolePage = withRouter(
         });
     }
 
+
+
     render() {
+
+      // console.log("THIESLKJF", this.props.location.search)
+
       return (
         <div>
           <a href="/#/" onClick={() => this.startNewRabbithole()}>
