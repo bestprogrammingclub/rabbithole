@@ -199,11 +199,28 @@ const RabbitHolePage = withRouter(
 
       // console.log("THIESLKJF", this.props.location.search)
 
+      var rabbitHolePath = [];
+      const searchParams = new URLSearchParams(this.props.location.search);
+      const wikiValue = searchParams.get('wiki');
+
+      if (wikiValue) {
+        rabbitHolePath = wikiValue.split('|');
+      }
+
       return (
         <div>
           <a href="/#/" onClick={() => this.startNewRabbithole()}>
             START OVER
           </a>
+
+          <ul>
+            {rabbitHolePath.map((pageTitle, index) => (
+              <li key={index}>{pageTitle}</li>
+            )
+            )}
+          </ul>
+          
+
           {this.state.wikiData.lead &&
             this.state.wikiData.lead.sections &&
             this.state.wikiData.lead.sections.map((section) => (
