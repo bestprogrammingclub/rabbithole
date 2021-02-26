@@ -89,35 +89,7 @@ const RabbitHolePage = withRouter(
       if (this.props.location.search) {
         this.getMostRecentPage();
       } else {
-        fetch(
-          `https://en.wikipedia.org/api/rest_v1/page/random/title`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }          
-        )
-        .then((resp) => resp.json())
-        .then((randomTitleData) => {
-          console.log('TITLE FETCH resp', randomTitleData.items[0].title);
-          this.setState({ firstPageTitle: randomTitleData.items[0].title});
-
-          fetch(
-            `https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${randomTitleData.items[0].title}`,
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            }
-          )
-            .then((resp) => resp.json())
-            .then((data) => {
-              console.log('resp', data);
-  
-              this.setState({ wikiData: data });
-            });
-            
-        });
+        this.startNewRabbithole();
       }
     }
 
@@ -140,6 +112,8 @@ const RabbitHolePage = withRouter(
       if (wikiValue) {
         const wikiValueArray = wikiValue.split('|');
         const mostRecentPage = wikiValueArray[wikiValueArray.length - 1];
+
+        // COULD REFACTOR 
 
         fetch(
           `https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${mostRecentPage}`,
@@ -189,21 +163,34 @@ const RabbitHolePage = withRouter(
     }
 
     startNewRabbithole() {
-      console.log('TODO');
       fetch(
-        `https://en.wikipedia.org/api/rest_v1/page/random/mobile-sections`,
+        `https://en.wikipedia.org/api/rest_v1/page/random/title`,
         {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        }          
       )
-        .then((resp) => resp.json())
-        .then((resp) => {
-          console.log('resp', resp);
+      .then((resp) => resp.json())
+      .then((randomTitleData) => {
+        console.log('TITLE FETCH resp', randomTitleData.items[0].title);
+        this.setState({ firstPageTitle: randomTitleData.items[0].title});
 
-          this.setState({ wikiData: resp });
-        });
+        fetch(
+          `https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${randomTitleData.items[0].title}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+          .then((resp) => resp.json())
+          .then((data) => {
+            console.log('resp', data);
+
+            this.setState({ wikiData: data });
+          });           
+      });    
     }
 
 
