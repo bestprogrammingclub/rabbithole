@@ -170,9 +170,30 @@ const RabbitHolePage = withRouter(
       );
     }
 
+    startNewRabbithole() {
+      console.log('TODO');
+      fetch(
+        `https://en.wikipedia.org/api/rest_v1/page/random/mobile-sections`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+        .then((resp) => resp.json())
+        .then((resp) => {
+          console.log('resp', resp);
+
+          this.setState({ wikiData: resp });
+        });
+    }
+
     render() {
       return (
         <div>
+          <a href="/#/" onClick={() => this.startNewRabbithole()}>
+            START OVER
+          </a>
           {this.state.wikiData.lead &&
             this.state.wikiData.lead.sections &&
             this.state.wikiData.lead.sections.map((section) => (
