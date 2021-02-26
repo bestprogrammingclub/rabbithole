@@ -113,8 +113,6 @@ const RabbitHolePage = withRouter(
         const wikiValueArray = wikiValue.split('|');
         const mostRecentPage = wikiValueArray[wikiValueArray.length - 1];
 
-        // TODO : COULD REFACTOR 
-
         this.fetchPage(mostRecentPage);
       }
     }
@@ -186,16 +184,14 @@ const RabbitHolePage = withRouter(
 
 
     render() {
-
-      // console.log("THIESLKJF", this.props.location.search)
-
       var rabbitHolePath = [];
       const searchParams = new URLSearchParams(this.props.location.search);
       const wikiValue = searchParams.get('wiki');
 
       if (wikiValue) {
-        rabbitHolePath = wikiValue.split('|');
+        rabbitHolePath = wikiValue.replace(/_/g, ' ').split('|');
       }
+      console.log(rabbitHolePath);
 
       return (
         <div>
