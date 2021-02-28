@@ -6,7 +6,7 @@ import {
   Link,
   withRouter,
 } from 'react-router-dom';
-import { Grommet } from 'grommet';
+import { Grommet, Box, Button, Grid, Header, Footer } from 'grommet';
 
 // This site has 3 pages, all of which are rendered
 // dynamically in the browser (not server rendered).
@@ -21,7 +21,15 @@ export default function App() {
   return (
     <Router>
       <Grommet plain>
-        <RabbitHolePage />
+        <Header pad="medium">
+          <Box>
+            <span aria-label="rabbithole">rabbith0le</span>
+          </Box>
+        </Header>
+        <Box pad="medium">
+          <RabbitHolePage />
+        </Box>
+        <Footer pad="medium">Made by Best Programming Club</Footer>
       </Grommet>
     </Router>
   );
@@ -164,9 +172,11 @@ const RabbitHolePage = withRouter(
 
       return (
         <div>
-          <a href="/#/" onClick={() => this.startNewRabbithole()}>
-            START OVER
-          </a>
+          <Button
+            href="/#/"
+            onClick={() => this.startNewRabbithole()}
+            label="START OVER"
+          />
 
           <ul>
             {rabbitHolePath.map((pageTitle, index) => (
@@ -174,29 +184,48 @@ const RabbitHolePage = withRouter(
             ))}
           </ul>
 
-          {this.state.wikiData.lead &&
-            this.state.wikiData.lead.sections &&
-            this.state.wikiData.lead.sections.map((section) => (
-              <div
-                key={section.id}
-                dangerouslySetInnerHTML={{
-                  __html: this.replaceLinks(section.text),
-                }}
-              />
-            ))}
-
-          {this.state.wikiData.remaining &&
-            this.state.wikiData.remaining.sections &&
-            this.state.wikiData.remaining.sections.map((section) => (
-              <div key={section.id}>
-                <h2>{section.line}</h2>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: this.replaceLinks(section.text),
-                  }}
-                />
-              </div>
-            ))}
+          <Grid
+            rows={['auto', 'auto']}
+            columns={['flex', 'medium']}
+            gap="small"
+            areas={[
+              // |-------------|
+              // | summary     |
+              // |-------------|
+              // | remaining | lead |
+              // |-------------|
+              ['wikiSummary', 'wikiSummary'],
+              ['wikiRemaining', 'wikiLead'],
+            ]}
+          >
+            <Box gridArea="wikiSummary">TODO</Box>
+            <Box gridArea="wikiLead">
+              {this.state.wikiData.lead &&
+                this.state.wikiData.lead.sections &&
+                this.state.wikiData.lead.sections.map((section) => (
+                  <div
+                    key={section.id}
+                    dangerouslySetInnerHTML={{
+                      __html: this.replaceLinks(section.text),
+                    }}
+                  />
+                ))}
+            </Box>
+            <Box gridArea="wikiRemaining">
+              {this.state.wikiData.remaining &&
+                this.state.wikiData.remaining.sections &&
+                this.state.wikiData.remaining.sections.map((section) => (
+                  <div key={section.id}>
+                    <h2>{section.line}</h2>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: this.replaceLinks(section.text),
+                      }}
+                    />
+                  </div>
+                ))}
+            </Box>
+          </Grid>
         </div>
       );
     }
