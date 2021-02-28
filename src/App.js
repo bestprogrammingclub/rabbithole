@@ -113,26 +113,9 @@ const RabbitHolePage = withRouter(
         const wikiValueArray = wikiValue.split('|');
         const mostRecentPage = wikiValueArray[wikiValueArray.length - 1];
 
-        // TODO : COULD REFACTOR 
-
-        fetch(
-          `https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${mostRecentPage}`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        )
-          .then((resp) => resp.json())
-          .then((resp) => {
-            console.log('resp', resp);
-
-            this.setState({ wikiData: resp });
-          });
+        this.fetchPage(mostRecentPage);
       }
     }
-
-
 
     /**
      * Replace links to `/wiki/` page in in API response with
@@ -162,6 +145,23 @@ const RabbitHolePage = withRouter(
       );
     }
 
+    fetchPage(pageTitle) {
+      fetch(
+        `https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${pageTitle}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+        .then((resp) => resp.json())
+        .then((data) => {
+          console.log('resp', data);
+
+          this.setState({ wikiData: data });
+        });
+    }
+
     startNewRabbithole() {
       fetch(
         `https://en.wikipedia.org/api/rest_v1/page/random/title`,
@@ -173,39 +173,26 @@ const RabbitHolePage = withRouter(
       )
       .then((resp) => resp.json())
       .then((randomTitleData) => {
-        console.log('TITLE FETCH resp', randomTitleData.items[0].title);
-        this.setState({ firstPageTitle: randomTitleData.items[0].title});
+        const randomPageTitle = randomTitleData.items[0].title;
+        console.log('TITLE FETCH resp', randomPageTitle);
+        this.setState({ firstPageTitle: randomPageTitle });
 
-        fetch(
-          `https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${randomTitleData.items[0].title}`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        )
-          .then((resp) => resp.json())
-          .then((data) => {
-            console.log('resp', data);
-
-            this.setState({ wikiData: data });
-          });           
+        this.fetchPage(randomPageTitle);
+       
       });    
     }
 
 
 
     render() {
-
-      // console.log("THIESLKJF", this.props.location.search)
-
       var rabbitHolePath = [];
       const searchParams = new URLSearchParams(this.props.location.search);
       const wikiValue = searchParams.get('wiki');
 
       if (wikiValue) {
-        rabbitHolePath = wikiValue.split('|');
+        rabbitHolePath = wikiValue.replace(/_/g, ' ').split('|');
       }
+      console.log(rabbitHolePath);
 
       return (
         <div>
