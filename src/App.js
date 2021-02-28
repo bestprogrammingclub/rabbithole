@@ -6,7 +6,7 @@ import {
   Link,
   withRouter,
 } from 'react-router-dom';
-import { Grommet, Box, Button, Grid, Header, Footer } from 'grommet';
+import { Grommet, Box, Button, Grid, Header, Image, Footer } from 'grommet';
 
 const appTheme = {
   global: {
@@ -30,6 +30,13 @@ export default function App() {
     <Router>
       <Grommet theme={appTheme}>
         <Header pad="medium">
+          <Box height="small" width="small">
+            <Image
+              fit="contain"
+              src={process.env.PUBLIC_URL + '/rabbith0le_logo.JPG'}
+            />
+          </Box>
+
           <Box>
             <span aria-label="rabbithole">rabbith0le</span>
           </Box>
