@@ -6,6 +6,7 @@ import {
   Link,
   withRouter,
 } from 'react-router-dom';
+import { Grommet } from 'grommet';
 
 // This site has 3 pages, all of which are rendered
 // dynamically in the browser (not server rendered).
@@ -19,38 +20,9 @@ import {
 export default function App() {
   return (
     <Router>
-      <div>
-        {/* <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/about">About</Link>
-          </li>
-        </ul> */}
-
-        <hr />
-
-        {/* <a href="http://en.wikipedia.org/wiki/Special:Random">Random Wiki Article</a> */}
-
-        {/*
-          A <Switch> looks through all its children <Route>
-          elements and renders the first one whose path
-          matches the current URL. Use a <Switch> any time
-          you have multiple routes, but you want only one
-          of them to render at a time
-        */}
-        {/* <Switch>
-          <Route exact path="/">
-            <Home /> 
-            <RabbitHole /> 
-          </Route>
-          <Route path="/about">
-            <About />
-          </Route>
-        </Switch> */}
+      <Grommet plain>
         <RabbitHolePage />
-      </div>
+      </Grommet>
     </Router>
   );
 }
@@ -80,7 +52,7 @@ const RabbitHolePage = withRouter(
       super(props);
       this.state = {
         wikiData: {},
-        firstPageTitle: "",
+        firstPageTitle: '',
       };
     }
 
@@ -141,7 +113,9 @@ const RabbitHolePage = withRouter(
         //  3. /wiki/Mammal    ->  /#/?wiki=Pet_door|Dog|Mammal
         // TODO Handle if URL is too long, show message like
         // "you've been in the rabbit hole too long"
-        `/#/?wiki=${wikiValue ? `${wikiValue}` : `${this.state.firstPageTitle}`}|`
+        `/#/?wiki=${
+          wikiValue ? `${wikiValue}` : `${this.state.firstPageTitle}`
+        }|`
       );
     }
 
@@ -163,26 +137,20 @@ const RabbitHolePage = withRouter(
     }
 
     startNewRabbithole() {
-      fetch(
-        `https://en.wikipedia.org/api/rest_v1/page/random/title`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }          
-      )
-      .then((resp) => resp.json())
-      .then((randomTitleData) => {
-        const randomPageTitle = randomTitleData.items[0].title;
-        console.log('TITLE FETCH resp', randomPageTitle);
-        this.setState({ firstPageTitle: randomPageTitle });
+      fetch(`https://en.wikipedia.org/api/rest_v1/page/random/title`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((resp) => resp.json())
+        .then((randomTitleData) => {
+          const randomPageTitle = randomTitleData.items[0].title;
+          console.log('TITLE FETCH resp', randomPageTitle);
+          this.setState({ firstPageTitle: randomPageTitle });
 
-        this.fetchPage(randomPageTitle);
-       
-      });    
+          this.fetchPage(randomPageTitle);
+        });
     }
-
-
 
     render() {
       var rabbitHolePath = [];
@@ -203,10 +171,8 @@ const RabbitHolePage = withRouter(
           <ul>
             {rabbitHolePath.map((pageTitle, index) => (
               <li key={index}>{pageTitle}</li>
-            )
-            )}
+            ))}
           </ul>
-          
 
           {this.state.wikiData.lead &&
             this.state.wikiData.lead.sections &&
