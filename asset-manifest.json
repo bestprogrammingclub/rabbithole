@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/rabbithole/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/rabbithole/static/js/main.65f718a8.chunk.js",
-    "main.js.map": "/rabbithole/static/js/main.65f718a8.chunk.js.map",
+    "main.js": "/rabbithole/static/js/main.f27bfba4.chunk.js",
+    "main.js.map": "/rabbithole/static/js/main.f27bfba4.chunk.js.map",
     "runtime-main.js": "/rabbithole/static/js/runtime-main.45c1db40.js",
     "runtime-main.js.map": "/rabbithole/static/js/runtime-main.45c1db40.js.map",
     "static/js/2.7b5497cd.chunk.js": "/rabbithole/static/js/2.7b5497cd.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.45c1db40.js",
     "static/js/2.7b5497cd.chunk.js",
     "static/css/main.6dea0f05.chunk.css",
-    "static/js/main.65f718a8.chunk.js"
+    "static/js/main.f27bfba4.chunk.js"
   ]
 }
