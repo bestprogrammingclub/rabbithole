@@ -8,6 +8,14 @@ import {
 } from 'react-router-dom';
 import { Grommet, Box, Button, Grid, Header, Footer } from 'grommet';
 
+const appTheme = {
+  global: {
+    colors: {
+      brand: 'magenta',
+    },
+  },
+};
+
 // This site has 3 pages, all of which are rendered
 // dynamically in the browser (not server rendered).
 //
@@ -20,7 +28,7 @@ import { Grommet, Box, Button, Grid, Header, Footer } from 'grommet';
 export default function App() {
   return (
     <Router>
-      <Grommet plain>
+      <Grommet theme={appTheme}>
         <Header pad="medium">
           <Box>
             <span aria-label="rabbithole">rabbith0le</span>
@@ -189,11 +197,11 @@ const RabbitHolePage = withRouter(
             columns={['flex', 'medium']}
             gap="small"
             areas={[
-              // |-------------|
-              // | summary     |
-              // |-------------|
+              // |------------------|
+              // | summary          |
+              // |------------------|
               // | remaining | lead |
-              // |-------------|
+              // |------------------|
               ['wikiSummary', 'wikiSummary'],
               ['wikiRemaining', 'wikiLead'],
             ]}
