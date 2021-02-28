@@ -173,10 +173,11 @@ const RabbitHolePage = withRouter(
       )
       .then((resp) => resp.json())
       .then((randomTitleData) => {
-        console.log('TITLE FETCH resp', randomTitleData.items[0].title);
-        this.setState({ firstPageTitle: randomTitleData.items[0].title});
+        const randomPageTitle = randomTitleData.items[0].title;
+        console.log('TITLE FETCH resp', randomPageTitle);
+        this.setState({ firstPageTitle: randomPageTitle });
 
-        this.fetchPage(randomTitleData.items[0].title);
+        this.fetchPage(randomPageTitle);
        
       });    
     }
