@@ -80,6 +80,7 @@ const RabbitHolePage = withRouter(
       super(props);
       this.state = {
         wikiData: {},
+        firstPageTitle: "",
       };
     }
 
@@ -88,20 +89,7 @@ const RabbitHolePage = withRouter(
       if (this.props.location.search) {
         this.getMostRecentPage();
       } else {
-        fetch(
-          `https://en.wikipedia.org/api/rest_v1/page/random/mobile-sections`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        )
-          .then((resp) => resp.json())
-          .then((resp) => {
-            console.log('resp', resp);
-
-            this.setState({ wikiData: resp });
-          });
+        this.startNewRabbithole();
       }
     }
 
@@ -125,20 +113,7 @@ const RabbitHolePage = withRouter(
         const wikiValueArray = wikiValue.split('|');
         const mostRecentPage = wikiValueArray[wikiValueArray.length - 1];
 
-        fetch(
-          `https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${mostRecentPage}`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        )
-          .then((resp) => resp.json())
-          .then((resp) => {
-            console.log('resp', resp);
-
-            this.setState({ wikiData: resp });
-          });
+        this.fetchPage(mostRecentPage);
       }
     }
 
@@ -166,14 +141,13 @@ const RabbitHolePage = withRouter(
         //  3. /wiki/Mammal    ->  /#/?wiki=Pet_door|Dog|Mammal
         // TODO Handle if URL is too long, show message like
         // "you've been in the rabbit hole too long"
-        `/#/?wiki=${wikiValue ? `${wikiValue}|` : ''}`
+        `/#/?wiki=${wikiValue ? `${wikiValue}` : `${this.state.firstPageTitle}`}|`
       );
     }
 
-    startNewRabbithole() {
-      console.log('TODO');
+    fetchPage(pageTitle) {
       fetch(
-        `https://en.wikipedia.org/api/rest_v1/page/random/mobile-sections`,
+        `https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${pageTitle}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -181,19 +155,59 @@ const RabbitHolePage = withRouter(
         }
       )
         .then((resp) => resp.json())
-        .then((resp) => {
-          console.log('resp', resp);
+        .then((data) => {
+          console.log('resp', data);
 
-          this.setState({ wikiData: resp });
+          this.setState({ wikiData: data });
         });
     }
 
+    startNewRabbithole() {
+      fetch(
+        `https://en.wikipedia.org/api/rest_v1/page/random/title`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }          
+      )
+      .then((resp) => resp.json())
+      .then((randomTitleData) => {
+        const randomPageTitle = randomTitleData.items[0].title;
+        console.log('TITLE FETCH resp', randomPageTitle);
+        this.setState({ firstPageTitle: randomPageTitle });
+
+        this.fetchPage(randomPageTitle);
+       
+      });    
+    }
+
+
+
     render() {
+      var rabbitHolePath = [];
+      const searchParams = new URLSearchParams(this.props.location.search);
+      const wikiValue = searchParams.get('wiki');
+
+      if (wikiValue) {
+        rabbitHolePath = wikiValue.replace(/_/g, ' ').split('|');
+      }
+      console.log(rabbitHolePath);
+
       return (
         <div>
           <a href="/#/" onClick={() => this.startNewRabbithole()}>
             START OVER
           </a>
+
+          <ul>
+            {rabbitHolePath.map((pageTitle, index) => (
+              <li key={index}>{pageTitle}</li>
+            )
+            )}
+          </ul>
+          
+
           {this.state.wikiData.lead &&
             this.state.wikiData.lead.sections &&
             this.state.wikiData.lead.sections.map((section) => (
