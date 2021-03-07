@@ -81,6 +81,7 @@ const RabbitHolePage = withRouter(
       this.state = {
         wikiData: {},
         firstPageTitle: "",
+        isLoading: null,
       };
     }
 
@@ -163,6 +164,7 @@ const RabbitHolePage = withRouter(
     }
 
     startNewRabbithole() {
+      this.setState({ isLoading: true }); 
       fetch(
         `https://en.wikipedia.org/api/rest_v1/page/random/title`,
         {
@@ -175,11 +177,13 @@ const RabbitHolePage = withRouter(
       .then((randomTitleData) => {
         const randomPageTitle = randomTitleData.items[0].title;
         console.log('TITLE FETCH resp', randomPageTitle);
-        this.setState({ firstPageTitle: randomPageTitle });
+        this.setState({ 
+          firstPageTitle: randomPageTitle,
+          isLoading: false, 
+         });
 
         this.fetchPage(randomPageTitle);
-       
-      });    
+      });
     }
 
 
@@ -196,7 +200,16 @@ const RabbitHolePage = withRouter(
 
       return (
         <div>
-          <a href="/#/" onClick={() => this.startNewRabbithole()}>
+        
+          {this.state.isLoading && (
+              <div>
+                <p>Finding a way in!!!!!!!!!!!</p>
+              </div>
+            )}
+
+            {!this.state.isLoading && (
+              <div>
+                <a href="/#/" onClick={() => this.startNewRabbithole()}>
             START OVER
           </a>
 
@@ -231,6 +244,8 @@ const RabbitHolePage = withRouter(
                 />
               </div>
             ))}
+              </div>
+            )}
         </div>
       );
     }
