@@ -196,9 +196,9 @@ const RabbitHolePage = withRouter(
 
       return (
         <div>
-          <a href="/#/" onClick={() => this.startNewRabbithole()}>
+          <Link to="/#/" onClick={() => this.startNewRabbithole()}>
             START OVER
-          </a>
+          </Link>
 
           <ul>
             {rabbitHolePath.map((pageTitle, index) => (
