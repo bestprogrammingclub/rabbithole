@@ -182,7 +182,7 @@ const RabbitHolePage = withRouter(
           isLoading: false, 
          });
 
-        this.fetchPage(randomPageTitle);
+        //this.fetchPage(randomPageTitle);
       });
     }
 
@@ -205,9 +205,21 @@ const RabbitHolePage = withRouter(
               <div>
                 <p>Finding a way in!!!!!!!!!!!</p>
               </div>
-            )}
+          )}
 
-            {!this.state.isLoading && (
+          {!this.state.isLoading && 
+            this.state.firstPageTitle &&
+            !this.state.wikiData.lead && (
+              <div>
+                <p> THis is ur way in:</p>
+                <p> {this.state.firstPageTitle}</p>
+              </div>
+            )
+          }
+
+            {!this.state.isLoading &&
+              this.state.firstPageTitle &&
+              this.state.wikiData.lead &&(
               <div>
                 <a href="/#/" onClick={() => this.startNewRabbithole()}>
             START OVER
