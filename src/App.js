@@ -212,7 +212,11 @@ const RabbitHolePage = withRouter(
             !this.state.wikiData.lead && (
               <div>
                 <p> THis is ur way in:</p>
-                <p> {this.state.firstPageTitle}</p>
+                <p>
+                  <strong>
+                    {this.state.firstPageTitle.replace(/_/g, ' ')}
+                  </strong>
+                </p>
                 <div>
                   <button
                     onClick={() => this.fetchPage(this.state.firstPageTitle)}
