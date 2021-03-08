@@ -22,7 +22,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### Deploying
 
-Merging to the `main` branch will automatically deploy the app to [bestprogrammingclub.github.io/rabbithole](https://bestprogrammingclub.github.io/rabbithole/). You can monitor deploys in the [Actions tab](https://github.com/bestprogrammingclub/rabbithole/actions).
+Merging to the `main` branch will automatically deploy the app to [bestprogrammingclub.github.io/rabbithole](https://bestprogrammingclub.github.io/rabbithole/) / <rabbithole.bestprogramming.club>. You can monitor deploys in the [Actions tab](https://github.com/bestprogrammingclub/rabbithole/actions).
 
 To manually deploy the app:
 
