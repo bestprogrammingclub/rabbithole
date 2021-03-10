@@ -80,7 +80,8 @@ const RabbitHolePage = withRouter(
       super(props);
       this.state = {
         wikiData: {},
-        firstPageTitle: "",
+        firstPageTitle: '',
+        isLoading: null,
       };
     }
 
@@ -141,7 +142,9 @@ const RabbitHolePage = withRouter(
         //  3. /wiki/Mammal    ->  /#/?wiki=Pet_door|Dog|Mammal
         // TODO Handle if URL is too long, show message like
         // "you've been in the rabbit hole too long"
-        `/#/?wiki=${wikiValue ? `${wikiValue}` : `${this.state.firstPageTitle}`}|`
+        `/#/?wiki=${
+          wikiValue ? `${wikiValue}` : `${this.state.firstPageTitle}`
+        }|`
       );
     }
 
@@ -163,26 +166,28 @@ const RabbitHolePage = withRouter(
     }
 
     startNewRabbithole() {
-      fetch(
-        `https://en.wikipedia.org/api/rest_v1/page/random/title`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }          
-      )
-      .then((resp) => resp.json())
-      .then((randomTitleData) => {
-        const randomPageTitle = randomTitleData.items[0].title;
-        console.log('TITLE FETCH resp', randomPageTitle);
-        this.setState({ firstPageTitle: randomPageTitle });
+      this.setState({
+        wikiData: {},
+        firstPageTitle: '',
+        isLoading: true,
+      });
+      fetch(`https://en.wikipedia.org/api/rest_v1/page/random/title`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((resp) => resp.json())
+        .then((randomTitleData) => {
+          const randomPageTitle = randomTitleData.items[0].title;
+          console.log('TITLE FETCH resp', randomPageTitle);
+          this.setState({
+            firstPageTitle: randomPageTitle,
+            isLoading: false,
+          });
 
-        this.fetchPage(randomPageTitle);
-       
-      });    
+          //this.fetchPage(randomPageTitle);
+        });
     }
-
-
 
     render() {
       var rabbitHolePath = [];
@@ -196,41 +201,74 @@ const RabbitHolePage = withRouter(
 
       return (
         <div>
-          <a href="/#/" onClick={() => this.startNewRabbithole()}>
-            START OVER
-          </a>
+          {this.state.isLoading && (
+            <div>
+              <p>Finding a way in!!!!!!!!!!!</p>
+            </div>
+          )}
 
-          <ul>
-            {rabbitHolePath.map((pageTitle, index) => (
-              <li key={index}>{pageTitle}</li>
-            )
-            )}
-          </ul>
-          
-
-          {this.state.wikiData.lead &&
-            this.state.wikiData.lead.sections &&
-            this.state.wikiData.lead.sections.map((section) => (
-              <div
-                key={section.id}
-                dangerouslySetInnerHTML={{
-                  __html: this.replaceLinks(section.text),
-                }}
-              />
-            ))}
-
-          {this.state.wikiData.remaining &&
-            this.state.wikiData.remaining.sections &&
-            this.state.wikiData.remaining.sections.map((section) => (
-              <div key={section.id}>
-                <h2>{section.line}</h2>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: this.replaceLinks(section.text),
-                  }}
-                />
+          {!this.state.isLoading &&
+            this.state.firstPageTitle &&
+            !this.state.wikiData.lead && (
+              <div>
+                <p> THis is ur way in:</p>
+                <p>
+                  <strong>
+                    {this.state.firstPageTitle.replace(/_/g, ' ')}
+                  </strong>
+                </p>
+                <div>
+                  <button
+                    onClick={() => this.fetchPage(this.state.firstPageTitle)}
+                  >
+                    Start here
+                  </button>
+                  <button onClick={() => this.startNewRabbithole()}>
+                    Show me another way in
+                  </button>
+                </div>
               </div>
-            ))}
+            )}
+
+          {!this.state.isLoading &&
+            this.state.firstPageTitle &&
+            this.state.wikiData.lead && (
+              <div>
+                <a href="/#/" onClick={() => this.startNewRabbithole()}>
+                  START OVER
+                </a>
+
+                <ul>
+                  {rabbitHolePath.map((pageTitle, index) => (
+                    <li key={index}>{pageTitle}</li>
+                  ))}
+                </ul>
+
+                {this.state.wikiData.lead &&
+                  this.state.wikiData.lead.sections &&
+                  this.state.wikiData.lead.sections.map((section) => (
+                    <div
+                      key={section.id}
+                      dangerouslySetInnerHTML={{
+                        __html: this.replaceLinks(section.text),
+                      }}
+                    />
+                  ))}
+
+                {this.state.wikiData.remaining &&
+                  this.state.wikiData.remaining.sections &&
+                  this.state.wikiData.remaining.sections.map((section) => (
+                    <div key={section.id}>
+                      <h2>{section.line}</h2>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: this.replaceLinks(section.text),
+                        }}
+                      />
+                    </div>
+                  ))}
+              </div>
+            )}
         </div>
       );
     }
